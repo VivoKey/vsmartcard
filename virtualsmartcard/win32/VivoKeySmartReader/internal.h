@@ -61,12 +61,12 @@ DEFINE_GUID(SmartCardReaderGuid, 0x50DD5230, 0xBA8A, 0x11D1, 0xBF,0x5D,0x00,0x00
 //	funcTrace (char *func) {
 //		TCHAR funcName[500];
 //		wsprintf(funcN, _T("%S"), func);
-//		wsprintf(funcName, _T("[BixVReader]IN -> %s"), funcN);
+//		wsprintf(funcName, _T("[VivoKeySmartReader]IN -> %s"), funcN);
 //		OutputDebugString(funcName);
 //	}
 //	~funcTrace () {
 //		TCHAR funcName[500];
-//		wsprintf(funcName, _T("[BixVReader]OUT -> %s"), funcN);
+//		wsprintf(funcName, _T("[VivoKeySmartReader]OUT -> %s"), funcN);
 //		OutputDebugString(funcName);
 //	}
 //};

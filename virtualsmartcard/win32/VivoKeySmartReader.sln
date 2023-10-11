@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BixVReader", "BixVReader\BixVReader.vcxproj", "{1D286E48-DE79-41FF-844B-56ED3764D4DA}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "VivoKeySmartReader", "VivoKeySmartReader\VivoKeySmartReader.vcxproj", "{1D286E48-DE79-41FF-844B-56ED3764D4DA}"
 EndProject
-Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "BixVReaderInstaller", "BixVReaderInstaller\BixVReaderInstaller.wixproj", "{9C30A09E-1A74-4091-93B7-6296F94CE77C}"
+Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "VivoKeySmartReaderInstaller", "VivoKeySmartReaderInstaller\VivoKeySmartReaderInstaller.wixproj", "{9C30A09E-1A74-4091-93B7-6296F94CE77C}"
 	ProjectSection(ProjectDependencies) = postProject
 		{1D286E48-DE79-41FF-844B-56ED3764D4DA} = {1D286E48-DE79-41FF-844B-56ED3764D4DA}
 		{42C4F882-2757-4C0D-90D9-BC096810163E} = {42C4F882-2757-4C0D-90D9-BC096810163E}

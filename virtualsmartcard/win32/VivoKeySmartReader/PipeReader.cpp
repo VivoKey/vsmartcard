@@ -42,9 +42,9 @@ PipeReader::PipeReader() {
 void PipeReader::init(wchar_t *section) {
 	wchar_t temp[300];
 	swprintf(temp,L"SCardSimulatorDriver%i",instance);
-	GetPrivateProfileStringW(section,L"PIPE_NAME",temp,pipeName,300,L"BixVReader.ini");
+	GetPrivateProfileStringW(section,L"PIPE_NAME",temp,pipeName,300,L"VivoKeySmartReader.ini");
 	swprintf(temp,L"SCardSimulatorDriverEvents%i",instance);
-	GetPrivateProfileStringW(section,L"PIPE_EVENT_NAME",temp,pipeEventName,300,L"BixVReader.ini");
+	GetPrivateProfileStringW(section,L"PIPE_EVENT_NAME",temp,pipeEventName,300,L"VivoKeySmartReader.ini");
 
 }
 
@@ -146,27 +146,27 @@ DWORD PipeReader::startServer() {
 	swprintf(temp,L"\\\\.\\pipe\\%s",pipeEventName);
 	HANDLE _eventpipe=CreateNamedPipe(temp,PIPE_ACCESS_DUPLEX|FILE_FLAG_OVERLAPPED,PIPE_TYPE_BYTE,PIPE_UNLIMITED_INSTANCES,0,0,0,&sa);
 	wchar_t log[300];
-	swprintf(log,L"[BixVReader]Pipe created:%s:%p",pipeName,_pipe);
+	swprintf(log,L"[VivoKeySmartReader]Pipe created:%s:%p",pipeName,_pipe);
 	OutputDebugString(log);
 
 	while (true) {
 		//__try {
 			BOOL ris=ConnectNamedPipe(_pipe,NULL);
 			if (ris==0) {
-				swprintf(log,L"[BixVReader]Pipe NOT connected:%x",GetLastError());
+				swprintf(log,L"[VivoKeySmartReader]Pipe NOT connected:%x",GetLastError());
 				OutputDebugString(log);
 			}
 			else {
-				swprintf(log,L"[BixVReader]Pipe connected");
+				swprintf(log,L"[VivoKeySmartReader]Pipe connected");
 				OutputDebugString(log);
 				}
 			ris=ConnectNamedPipe(_eventpipe,NULL);
 			if (ris==0) {
-				swprintf(log,L"[BixVReader]Event Pipe NOT connected:%x",GetLastError());
+				swprintf(log,L"[VivoKeySmartReader]Event Pipe NOT connected:%x",GetLastError());
 				OutputDebugString(log);
 			}
 			else {
-				swprintf(log,L"[BixVReader]Event Pipe connected");
+				swprintf(log,L"[VivoKeySmartReader]Event Pipe connected");
 				OutputDebugString(log);
 			}
 			pipe=_pipe;
@@ -192,7 +192,7 @@ DWORD PipeReader::startServer() {
 				DWORD read=0;
 				if (!ReadFile(eventpipe,&command,sizeof(DWORD),&read,NULL)) {
 					state=SCARD_ABSENT;
-					OutputDebugString(L"[BixVReader]Pipe error");
+					OutputDebugString(L"[VivoKeySmartReader]Pipe error");
 					powered=0;
 					pipe=NULL;
 					eventpipe=NULL;
@@ -201,11 +201,11 @@ DWORD PipeReader::startServer() {
 						SectionLocker lock(device->m_RequestLock);
 						while (!waitRemoveIpr.empty()) {
 							CComPtr<IWDFIoRequest> ipr = waitRemoveIpr.back();
-							OutputDebugString(L"[BixVReader]complete Wait Remove");
+							OutputDebugString(L"[VivoKeySmartReader]complete Wait Remove");
 							if (ipr->UnmarkCancelable()==S_OK) {
-								OutputDebugString(L"[BixVReader]Wait Remove Unmarked");
+								OutputDebugString(L"[VivoKeySmartReader]Wait Remove Unmarked");
 								ipr->CompleteWithInformation(STATUS_SUCCESS, 0);
-								OutputDebugString(L"[BixVReader]Wait Remove Completed");
+								OutputDebugString(L"[VivoKeySmartReader]Wait Remove Completed");
 							}
 							waitRemoveIpr.pop_back();
 						}
@@ -215,11 +215,11 @@ DWORD PipeReader::startServer() {
 						SectionLocker lock(device->m_RequestLock);
 						while (!waitInsertIpr.empty()) {
 							CComPtr<IWDFIoRequest> ipr = waitInsertIpr.back();
-							OutputDebugString(L"[BixVReader]cancel Wait Remove");
+							OutputDebugString(L"[VivoKeySmartReader]cancel Wait Remove");
 							if (ipr->UnmarkCancelable()==S_OK) {
-								OutputDebugString(L"[BixVReader]Wait Insert Unmarked");
+								OutputDebugString(L"[VivoKeySmartReader]Wait Insert Unmarked");
 								ipr->CompleteWithInformation(HRESULT_FROM_WIN32(ERROR_CANCELLED), 0);
-								OutputDebugString(L"[BixVReader]Wait Insert Cancelled");
+								OutputDebugString(L"[VivoKeySmartReader]Wait Insert Cancelled");
 							}
 							waitInsertIpr.pop_back();
 						}
@@ -228,7 +228,7 @@ DWORD PipeReader::startServer() {
 					DisconnectNamedPipe(_eventpipe);
 					break;
 				}
-				OutputDebugString(L"[BixVReader]Pipe data");
+				OutputDebugString(L"[VivoKeySmartReader]Pipe data");
 				if (command==0)
 					powered=0;
 				if (command==0 && !waitRemoveIpr.empty()) {
@@ -263,7 +263,7 @@ DWORD PipeReader::startServer() {
 		//	OutputDebugString(log);
 		//}
 	}
-	OutputDebugString(L"[BixVReader]Pipe quit!!!");
+	OutputDebugString(L"[VivoKeySmartReader]Pipe quit!!!");
 	return 0;
 }
 

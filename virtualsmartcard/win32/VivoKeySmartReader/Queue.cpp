@@ -85,10 +85,10 @@ HRESULT CMyQueue::CreateInstance(__in IWDFDevice*  pWdfDevice, CMyDevice* pMyDev
                                             );
             if (FAILED(hr))
             {
-				OutputDebugString (L"[BixVReader]IoQueue NOT Created\n");
+				OutputDebugString (L"[VivoKeySmartReader]IoQueue NOT Created\n");
             }
 			else
-				OutputDebugString (L"[BixVReader]IoQueue Created\n");
+				OutputDebugString (L"[VivoKeySmartReader]IoQueue Created\n");
 
         }
 

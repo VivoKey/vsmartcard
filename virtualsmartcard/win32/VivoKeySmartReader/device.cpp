@@ -38,7 +38,7 @@ CMyDevice::CreateInstance(
     CComObject<CMyDevice>* device = NULL;
     HRESULT hr;
 
-    OutputDebugString(L"[BixVReader]CreateInstance");    //
+    OutputDebugString(L"[VivoKeySmartReader]CreateInstance");    //
     // Allocate a new instance of the device class.
     //
     hr = CComObject<CMyDevice>::CreateInstance(&device);
@@ -53,35 +53,35 @@ CMyDevice::CreateInstance(
     //
     device->AddRef();
 
-    OutputDebugString(L"[BixVReader]SetLockingConstraint");    //
+    OutputDebugString(L"[VivoKeySmartReader]SetLockingConstraint");    //
     FxDeviceInit->SetLockingConstraint(WdfDeviceLevel);
 
     CComPtr<IUnknown> spCallback;
-    OutputDebugString(L"[BixVReader]QueryInterface");    //
+    OutputDebugString(L"[VivoKeySmartReader]QueryInterface");    //
     hr = device->QueryInterface(IID_IUnknown, (void**)&spCallback);
 
     CComPtr<IWDFDevice> spIWDFDevice;
     if (SUCCEEDED(hr))
     {
-        OutputDebugString(L"[BixVReader]CreateDevice");    //
+        OutputDebugString(L"[VivoKeySmartReader]CreateDevice");    //
         hr = FxDriver->CreateDevice(FxDeviceInit, spCallback, &spIWDFDevice);
     }
 
-    device->numInstances=GetPrivateProfileInt(L"Driver",L"NumReaders",1,L"BixVReader.ini");
+    device->numInstances=GetPrivateProfileInt(L"Driver",L"NumReaders",1,L"VivoKeySmartReader.ini");
 
     WSADATA wsaData;
     int iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
     if (iResult != NO_ERROR) {
-        OutputDebugString(L"[BixVReader]Error at WSAStartup()\n");
+        OutputDebugString(L"[VivoKeySmartReader]Error at WSAStartup()\n");
     }
 
     for (int i=0;i<device->numInstances;i++) {
-        OutputDebugString(L"[BixVReader]CreateDeviceInterface");    //
+        OutputDebugString(L"[VivoKeySmartReader]CreateDeviceInterface");    //
         wchar_t name[10];
         swprintf(name,L"DEV%i",i);
 
         if (spIWDFDevice->CreateDeviceInterface(&SmartCardReaderGuid,name)!=0)
-            OutputDebugString(L"[BixVReader]CreateDeviceInterface Failed");
+            OutputDebugString(L"[VivoKeySmartReader]CreateDeviceInterface Failed");
     }
 
     SAFE_RELEASE(device);
@@ -98,7 +98,7 @@ void CMyDevice::ProcessIoControl(__in IWDFIoQueue*     pQueue,
         SectionLogger a(__FUNCTION__);
     UNREFERENCED_PARAMETER(pQueue);
     wchar_t log[300];
-    swprintf(log,L"[BixVReader][IOCT]IOCTL %08X - In %i Out %i",ControlCode,inBufSize,outBufSize);
+    swprintf(log,L"[VivoKeySmartReader][IOCT]IOCTL %08X - In %i Out %i",ControlCode,inBufSize,outBufSize);
     OutputDebugString(log);
 
     //SectionLocker lock(m_RequestLock);
@@ -148,7 +148,7 @@ void CMyDevice::ProcessIoControl(__in IWDFIoQueue*     pQueue,
         reader.IoSmartCardTransmit(pRequest,inBufSize,outBufSize);
         return;
     }
-    swprintf(log,L"[BixVReader][IOCT]ERROR_NOT_SUPPORTED:%08X",ControlCode);
+    swprintf(log,L"[VivoKeySmartReader][IOCT]ERROR_NOT_SUPPORTED:%08X",ControlCode);
     OutputDebugString(log);
     pRequest->CompleteWithInformation(HRESULT_FROM_WIN32(ERROR_NOT_SUPPORTED), 0);
 
@@ -228,7 +228,7 @@ HRESULT CMyDevice::OnD0Entry(IN IWDFDevice*  pWdfDevice,IN WDF_POWER_DEVICE_STAT
     UNREFERENCED_PARAMETER(pWdfDevice);
     UNREFERENCED_PARAMETER(previousState);
 
-    numInstances=GetPrivateProfileInt(L"Driver",L"NumReaders",1,L"BixVReader.ini");
+    numInstances=GetPrivateProfileInt(L"Driver",L"NumReaders",1,L"VivoKeySmartReader.ini");
     readers.resize(numInstances);
 
     for (int i=0;i<numInstances;i++) {
@@ -237,7 +237,7 @@ HRESULT CMyDevice::OnD0Entry(IN IWDFDevice*  pWdfDevice,IN WDF_POWER_DEVICE_STAT
         swprintf(section,L"Reader%i",i);
         sprintf(sectionA,"Reader%i",i);
 
-        int rpcType=GetPrivateProfileInt(section,L"RPC_TYPE",0,L"BixVReader.ini");
+        int rpcType=GetPrivateProfileInt(section,L"RPC_TYPE",0,L"VivoKeySmartReader.ini");
         if (rpcType==0)
             readers[i]=new PipeReader();
         else if (rpcType==1)
@@ -247,9 +247,9 @@ HRESULT CMyDevice::OnD0Entry(IN IWDFDevice*  pWdfDevice,IN WDF_POWER_DEVICE_STAT
 
         readers[i]->instance=i;
         readers[i]->device=this;
-        GetPrivateProfileStringA(sectionA,"VENDOR_NAME","Bix",readers[i]->vendorName,sizeof readers[i]->vendorName,"BixVReader.ini");
-        GetPrivateProfileStringA(sectionA,"VENDOR_IFD_TYPE","VIRTUAL_CARD_READER",readers[i]->vendorIfdType,sizeof readers[i]->vendorIfdType,"BixVReader.ini");
-        readers[i]->deviceUnit=GetPrivateProfileInt(section,L"DEVICE_UNIT",i,L"BixVReader.ini");
+        GetPrivateProfileStringA(sectionA,"VENDOR_NAME","VivoKey",readers[i]->vendorName,sizeof readers[i]->vendorName,"VivoKeySmartReader.ini");
+        GetPrivateProfileStringA(sectionA,"VENDOR_IFD_TYPE","VIRTUAL_CARD_READER",readers[i]->vendorIfdType,sizeof readers[i]->vendorIfdType,"VivoKeySmartReader.ini");
+        readers[i]->deviceUnit=GetPrivateProfileInt(section,L"DEVICE_UNIT",i,L"VivoKeySmartReader.ini");
         readers[i]->protocol=0;
 
         readers[i]->init(section);
@@ -280,21 +280,21 @@ void CMyDevice::shutDown() {
 HRESULT CMyDevice::OnQueryRemove(IN IWDFDevice*  pWdfDevice) {
     SectionLogger a(__FUNCTION__);
     UNREFERENCED_PARAMETER(pWdfDevice);
-    OutputDebugString(L"[BixVReader]OnQueryRemove");
+    OutputDebugString(L"[VivoKeySmartReader]OnQueryRemove");
     shutDown();
     return S_OK;
 }
 HRESULT CMyDevice::OnQueryStop(IN IWDFDevice*  pWdfDevice) {
     SectionLogger a(__FUNCTION__);
     UNREFERENCED_PARAMETER(pWdfDevice);
-    OutputDebugString(L"[BixVReader]OnQueryStop");
+    OutputDebugString(L"[VivoKeySmartReader]OnQueryStop");
     shutDown();
     return S_OK;
 }
 void CMyDevice::OnSurpriseRemoval(IN IWDFDevice*  pWdfDevice) {
     SectionLogger a(__FUNCTION__);
     UNREFERENCED_PARAMETER(pWdfDevice);
-    OutputDebugString(L"[BixVReader]OnSurpriseRemoval");
+    OutputDebugString(L"[VivoKeySmartReader]OnSurpriseRemoval");
     shutDown();
 }
 
@@ -321,14 +321,14 @@ STDMETHODIMP_ (void) CMyDevice::OnCancel(IN IWDFIoRequest*  pWdfRequest) {
     for (std::vector< CComPtr<IWDFIoRequest> >::iterator it = reader.waitRemoveIpr.begin();
             it != reader.waitRemoveIpr.end(); it++) {
         if (pWdfRequest == *it) {
-            OutputDebugString(L"[BixVReader]Cancel Remove");
+            OutputDebugString(L"[VivoKeySmartReader]Cancel Remove");
             reader.waitRemoveIpr.erase(it);
         }
     }
     for (std::vector< CComPtr<IWDFIoRequest> >::iterator it = reader.waitInsertIpr.begin();
             it != reader.waitInsertIpr.end(); it++) {
         if (pWdfRequest == *it) {
-            OutputDebugString(L"[BixVReader]Cancel Insert");
+            OutputDebugString(L"[VivoKeySmartReader]Cancel Insert");
             reader.waitInsertIpr.erase(it);
         }
     }

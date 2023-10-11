@@ -51,8 +51,8 @@ install:
 build_script:
  - md %ARTIFACT%
 
- - msbuild virtualsmartcard\win32\BixVReader.sln /p:Configuration=Release;Platform=%MSBUILD_PLATFORM%
- - move    virtualsmartcard\win32\BixVReaderInstaller\bin\%X64%Release\BixVReaderInstaller.msi %ARTIFACT%
+ - msbuild virtualsmartcard\win32\VivoKeySmartReader.sln /p:Configuration=Release;Platform=%MSBUILD_PLATFORM%
+ - move    virtualsmartcard\win32\VivoKeySmartReaderInstaller\bin\%X64%Release\VivoKeySmartReaderInstaller.msi %ARTIFACT%
  - move    virtualsmartcard\win32\%X64%Release\*.cer %ARTIFACT%
  - copy    virtualsmartcard\doc\install.txt %ARTIFACT%
 

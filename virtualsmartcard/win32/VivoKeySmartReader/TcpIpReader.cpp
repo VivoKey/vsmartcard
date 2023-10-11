@@ -15,10 +15,10 @@ TcpIpReader::TcpIpReader() {
 	state=SCARD_ABSENT;
 }
 void TcpIpReader::init(wchar_t *section) {
-	portBase=GetPrivateProfileInt(L"Driver",L"RPC_PORT_BASE",29500,L"BixVReader.ini");
+	portBase=GetPrivateProfileInt(L"Driver",L"RPC_PORT_BASE",29500,L"VivoKeySmartReader.ini");
 
-	port=GetPrivateProfileInt(section,L"TCP_PORT",portBase+(instance<<1),L"BixVReader.ini");
-	eventPort=GetPrivateProfileInt(section,L"TCP_EVENT_PORT",portBase+1+(instance<<1),L"BixVReader.ini");
+	port=GetPrivateProfileInt(section,L"TCP_PORT",portBase+(instance<<1),L"VivoKeySmartReader.ini");
+	eventPort=GetPrivateProfileInt(section,L"TCP_EVENT_PORT",portBase+1+(instance<<1),L"VivoKeySmartReader.ini");
 
 	InitializeCriticalSection(&eventSection);
 	InitializeCriticalSection(&dataSection);
@@ -141,7 +141,7 @@ DWORD TcpIpReader::startServer() {
 					break;
 				if (ret<0) {
 					DWORD err=WSAGetLastError();
-					swprintf(log,L"[BixVReader]wsa err:%x",err);
+					swprintf(log,L"[VivoKeySmartReader]wsa err:%x",err);
 					OutputDebugString(log);
 					if (err==0x2736) {
 						socket=WSASocket(AF_INET,SOCK_STREAM,IPPROTO_TCP,NULL,0,0);
@@ -167,7 +167,7 @@ DWORD TcpIpReader::startServer() {
 			if (AcceptSocket == INVALID_SOCKET)
 				return 0;
 
-			swprintf(log,L"[BixVReader]Socket connected:%i",AcceptSocket);
+			swprintf(log,L"[VivoKeySmartReader]Socket connected:%i",AcceptSocket);
 			OutputDebugString(log);
 
 			FD_ZERO(&readfds);
@@ -183,7 +183,7 @@ DWORD TcpIpReader::startServer() {
 					break;
 				if (ret<0) {
 					DWORD err=WSAGetLastError();
-					swprintf(log,L"[BixVReader]wsa err:%x",err);
+					swprintf(log,L"[VivoKeySmartReader]wsa err:%x",err);
 					OutputDebugString(log);
 					if (err==0x2736) {
 						eventsocket=WSASocket(AF_INET,SOCK_STREAM,IPPROTO_TCP,NULL,0,0);
@@ -207,7 +207,7 @@ DWORD TcpIpReader::startServer() {
 			if (AcceptEventSocket == INVALID_SOCKET)
 				return 0;
 
-			swprintf(log,L"[BixVReader]Event Socket connected:%i",AcceptEventSocket);
+			swprintf(log,L"[VivoKeySmartReader]Event Socket connected:%i",AcceptEventSocket);
 			OutputDebugString(log);
 
 			if (!waitInsertIpr.empty()) {
@@ -231,7 +231,7 @@ DWORD TcpIpReader::startServer() {
 				int read=0;
 				if ((read=recv(AcceptEventSocket,(char*)&command,sizeof(DWORD),MSG_WAITALL))<=0) {
 					state=SCARD_ABSENT;
-					OutputDebugString(L"[BixVReader]Socket error");
+					OutputDebugString(L"[VivoKeySmartReader]Socket error");
 					powered=0;
 					::shutdown(AcceptSocket,SD_BOTH);
 					::shutdown(AcceptEventSocket,SD_BOTH);
@@ -240,11 +240,11 @@ DWORD TcpIpReader::startServer() {
 						SectionLocker lock(device->m_RequestLock);
 						while (!waitRemoveIpr.empty()) {
 							CComPtr<IWDFIoRequest> ipr = waitRemoveIpr.back();
-							OutputDebugString(L"[BixVReader]complete Wait Remove");
+							OutputDebugString(L"[VivoKeySmartReader]complete Wait Remove");
 							if (ipr->UnmarkCancelable()==S_OK) {
-								OutputDebugString(L"[BixVReader]Wait Remove Unmarked");
+								OutputDebugString(L"[VivoKeySmartReader]Wait Remove Unmarked");
 								ipr->CompleteWithInformation(STATUS_SUCCESS, 0);
-								OutputDebugString(L"[BixVReader]Wait Remove Completed");
+								OutputDebugString(L"[VivoKeySmartReader]Wait Remove Completed");
 							}
 							waitRemoveIpr.pop_back();
 						}
@@ -254,18 +254,18 @@ DWORD TcpIpReader::startServer() {
 						SectionLocker lock(device->m_RequestLock);
 						while (!waitInsertIpr.empty()) {
 							CComPtr<IWDFIoRequest> ipr = waitInsertIpr.back();
-							OutputDebugString(L"[BixVReader]cancel Wait Remove");
+							OutputDebugString(L"[VivoKeySmartReader]cancel Wait Remove");
 							if (ipr->UnmarkCancelable()==S_OK) {
-								OutputDebugString(L"[BixVReader]Wait Insert Unmarked");
+								OutputDebugString(L"[VivoKeySmartReader]Wait Insert Unmarked");
 								ipr->CompleteWithInformation(HRESULT_FROM_WIN32(ERROR_CANCELLED), 0);
-								OutputDebugString(L"[BixVReader]Wait Insert Cancelled");
+								OutputDebugString(L"[VivoKeySmartReader]Wait Insert Cancelled");
 							}
 							waitInsertIpr.pop_back();
 						}
 					}
 					break;
 				}
-				OutputDebugString(L"[BixVReader]Socket data");
+				OutputDebugString(L"[VivoKeySmartReader]Socket data");
 				if (command==0)
 					powered=0;
 				if (command==0 && !waitRemoveIpr.empty()) {
@@ -300,7 +300,7 @@ DWORD TcpIpReader::startServer() {
 		//	OutputDebugString(log);
 		//}
 	}
-	OutputDebugString(L"[BixVReader]Socket quit!!!");
+	OutputDebugString(L"[VivoKeySmartReader]Socket quit!!!");
 	return 0;
 }
 

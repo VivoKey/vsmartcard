@@ -3,7 +3,7 @@ NumReaders=1
 
 [Reader0]
 RPC_TYPE=2
-VENDOR_NAME=Virtual Smart Card Architecture
-VENDOR_IFD_TYPE=Virtual PCD
+VENDOR_NAME=VivoKey
+VENDOR_IFD_TYPE=Smart Reader
 TCP_PORT=35963
 DECIVE_UNIT=0

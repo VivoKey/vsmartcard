@@ -292,12 +292,12 @@ git submodule update --init --recursive
 </div>
 </li>
 <li><p>In Visual Studio open <abbr title="virtual smart card reader">vpcd</abbr>’s solution
-<code class="file docutils literal notranslate"><span class="pre">virtualsmartcard\win32\BixVReader.sln</span></code> and  ensure with the
+<code class="file docutils literal notranslate"><span class="pre">virtualsmartcard\win32\VivoKeySmartReader.sln</span></code> and  ensure with the
 configuration manager, that the project is built for your platform (i.e.
 <code class="docutils literal notranslate"><span class="pre">x64</span></code> or <code class="docutils literal notranslate"><span class="pre">x82</span></code>).</p></li>
 <li><p>If you can successfully <span class="guilabel">Build the solution</span>, you can find
-the installer (<code class="file docutils literal notranslate"><span class="pre">BixVReaderInstaller.msi</span></code>) in
-<code class="file docutils literal notranslate"><span class="pre">virtualsmartcard\win32\BixVReaderInstaller\bin\*Release</span></code></p></li>
+the installer (<code class="file docutils literal notranslate"><span class="pre">VivoKeySmartReaderInstaller.msi</span></code>) in
+<code class="file docutils literal notranslate"><span class="pre">virtualsmartcard\win32\VivoKeySmartReaderInstaller\bin\*Release</span></code></p></li>
 </ol>
 <p>For debugging <abbr title="virtual smart card reader">vpcd</abbr> and building the driver with an older version of Visual
 Studio or WDK please see <a class="reference external" href="http://www.codeproject.com/Articles/134010/An-UMDF-Driver-for-a-Virtual-Smart-Card-Reader">Fabio Ottavi’s UMDF Driver for a Virtual Smart Card
@@ -309,18 +309,18 @@ Reader</a> <a class="footnote-reference brackets" href="#id23" id="id25">11</a> 
 <h3>Istalling <abbr title="virtual smart card reader">vpcd</abbr> on Windows<a class="headerlink" href="#istalling-vpcd-on-windows" title="Permalink to this headline">¶</a></h3>
 <ol class="arabic">
 <li><p>To import the installer’s test signing certificate, double click
-<code class="file docutils literal notranslate"><span class="pre">BixVReader.cer</span></code> and add it to the <em>Trusted Root Certification
+<code class="file docutils literal notranslate"><span class="pre">VivoKeySmartReader.cer</span></code> and add it to the <em>Trusted Root Certification
 Authority</em> and the <em>Trusted Publishers</em> at the <em>Local Computer” (not the
 *Current User</em>).</p>
 <p>On the commandline, you could do this <span class="xref std std-ref">as follows</span>:</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>CertMgr.exe /add BixVReader.cer /s /r localMachine root /all
-CertMgr.exe /add BixVReader.cer /s /r localMachine trustedpublisher
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>CertMgr.exe /add VivoKeySmartReader.cer /s /r localMachine root /all
+CertMgr.exe /add VivoKeySmartReader.cer /s /r localMachine trustedpublisher
 </pre></div>
 </div>
 <p>Feel free to remove the certificate from the certificate stores once the
 device is installed.</p>
 </li>
-<li><p>To install <abbr title="virtual smart card reader">vpcd</abbr>, double click <code class="file docutils literal notranslate"><span class="pre">BixVReaderInstaller.msi</span></code>.</p></li>
+<li><p>To install <abbr title="virtual smart card reader">vpcd</abbr>, double click <code class="file docutils literal notranslate"><span class="pre">VivoKeySmartReaderInstaller.msi</span></code>.</p></li>
 </ol>
 </div>
 </div>
@@ -442,11 +442,11 @@ stopped when you unplug the device.</p>
 </div>
 <div class="section" id="configuring-vpcd-on-windows">
 <h3>Configuring <abbr title="virtual smart card reader">vpcd</abbr> on Windows<a class="headerlink" href="#configuring-vpcd-on-windows" title="Permalink to this headline">¶</a></h3>
-<p>The configuration file <code class="file docutils literal notranslate"><span class="pre">BixVReader.ini</span></code> of <abbr title="virtual smart card reader">vpcd</abbr> is installed to
+<p>The configuration file <code class="file docutils literal notranslate"><span class="pre">VivoKeySmartReader.ini</span></code> of <abbr title="virtual smart card reader">vpcd</abbr> is installed to
 <code class="file docutils literal notranslate"><span class="pre">C:\Windows</span></code> (<span class="target" id="index-0"></span><code class="xref std std-envvar docutils literal notranslate"><span class="pre">%SystemRoot%</span></code>). The user mode device driver
 framework (<strong class="command">WUDFHost.exe</strong>) should read it automatically and load the
 <abbr title="virtual smart card reader">vpcd</abbr> on startup. The Windows Device Manager <strong class="command">mmc devmgmt.msc</strong> should
-list the <span class="guilabel">Bix Virtual Smart Card Reader</span>.</p>
+list the <span class="guilabel">VivoKey Virtual Smart Card Reader</span>.</p>
 <p><abbr title="virtual smart card reader">vpcd</abbr> opens a socket for <abbr title="virtual smart card">vpicc</abbr> and waits for incoming connections. The port
 to open should be specified in <code class="docutils literal notranslate"><span class="pre">TCP_PORT</span></code>:</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="o">[</span>Driver<span class="o">]</span>

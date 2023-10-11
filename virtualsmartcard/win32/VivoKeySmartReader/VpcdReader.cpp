@@ -22,9 +22,9 @@ VpcdReader::~VpcdReader() {
 	DeleteCriticalSection(&ioSection);
 }
 void VpcdReader::init(wchar_t *section) {
-	portBase=GetPrivateProfileInt(L"Driver",L"RPC_PORT_BASE",VPCDPORT,L"BixVReader.ini");
+	portBase=GetPrivateProfileInt(L"Driver",L"RPC_PORT_BASE",VPCDPORT,L"VivoKeySmartReader.ini");
 
-	port=(short) GetPrivateProfileInt(section,L"TCP_PORT",portBase+instance,L"BixVReader.ini");
+	port=(short) GetPrivateProfileInt(section,L"TCP_PORT",portBase+instance,L"VivoKeySmartReader.ini");
 }
 
 bool VpcdReader::CheckATR() {

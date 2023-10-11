@@ -9,12 +9,12 @@ SectionLocker::SectionLocker(CRITICAL_SECTION &critsection,char *function,int li
 	DWORD start=GetTickCount();
 	if (TryEnterCriticalSection(section)==0) {
 		char logBuffer[500];
-		sprintf(logBuffer,"[BixVReader]Locking:Function:%s,Line:%i,Object:%p,Lock:%p",Function,Line,Object,section);
+		sprintf(logBuffer,"[VivoKeySmartReader]Locking:Function:%s,Line:%i,Object:%p,Lock:%p",Function,Line,Object,section);
 		OutputDebugStringA(logBuffer);
 		ShowMe=section;
 		EnterCriticalSection(section);
 		DWORD end=GetTickCount();	
-		sprintf(logBuffer,"[BixVReader]Elapsed:%i ms",end-start);
+		sprintf(logBuffer,"[VivoKeySmartReader]Elapsed:%i ms",end-start);
 		OutputDebugStringA(logBuffer);
 	}
 }
@@ -22,7 +22,7 @@ SectionLocker::SectionLocker(CRITICAL_SECTION &critsection,char *function,int li
 SectionLocker::~SectionLocker() {
 	if (section==ShowMe) {
 		char logBuffer[500];
-		sprintf(logBuffer,"[BixVReader]Unlocking:Function:%s,Line:%i,Object:%p,Lock:%p",Function,Line,Object,section);
+		sprintf(logBuffer,"[VivoKeySmartReader]Unlocking:Function:%s,Line:%i,Object:%p,Lock:%p",Function,Line,Object,section);
 		OutputDebugStringA(logBuffer);
 		ShowMe=NULL;
 	}
@@ -34,13 +34,13 @@ SectionLogger::SectionLogger(char *section) {
 	start=GetTickCount();
 	char logBuffer[500];
 	SectionName=section;
-	sprintf(logBuffer,"[BixVReader]Start section:%s",SectionName);
+	sprintf(logBuffer,"[VivoKeySmartReader]Start section:%s",SectionName);
 	OutputDebugStringA(logBuffer);
 }
 SectionLogger::~SectionLogger() {
 	DWORD end=GetTickCount();	
 	char logBuffer[500];
-	sprintf(logBuffer,"[BixVReader]End section:%s elapsed:%i",SectionName,end-start);
+	sprintf(logBuffer,"[VivoKeySmartReader]End section:%s elapsed:%i",SectionName,end-start);
 	OutputDebugStringA(logBuffer);
 }
 

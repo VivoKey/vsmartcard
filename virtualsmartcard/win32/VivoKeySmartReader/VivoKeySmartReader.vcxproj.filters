@@ -22,7 +22,7 @@
     <None Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Inf Include="BixVReader.inf">
+    <Inf Include="VivoKeySmartReader.inf">
       <Filter>Driver Files</Filter>
     </Inf>
   </ItemGroup>
@@ -70,7 +70,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="BixVReader.rc">
+    <ResourceCompile Include="VivoKeySmartReader.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
   </ItemGroup>

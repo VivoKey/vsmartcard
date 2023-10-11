@@ -162,13 +162,13 @@ requires the `WiX Toolset 3.10`_ to be installed.
     git submodule update --init --recursive
 
 2. In Visual Studio open |vpcd|'s solution
-   :file:`virtualsmartcard\\win32\\BixVReader.sln` and  ensure with the
+   :file:`virtualsmartcard\\win32\\VivoKeySmartReader.sln` and  ensure with the
    configuration manager, that the project is built for your platform (i.e.
    ``x64`` or ``x82``).
 
 3. If you can successfully :guilabel:`Build the solution`, you can find
-   the installer (:file:`BixVReaderInstaller.msi`) in
-   :file:`virtualsmartcard\\win32\\BixVReaderInstaller\\bin\\*Release`
+   the installer (:file:`VivoKeySmartReaderInstaller.msi`) in
+   :file:`virtualsmartcard\\win32\\VivoKeySmartReaderInstaller\\bin\\*Release`
 
 For debugging |vpcd| and building the driver with an older version of Visual
 Studio or WDK please see `Fabio Ottavi's UMDF Driver for a Virtual Smart Card
@@ -260,16 +260,16 @@ In case of a problem, inspect the logs::
 Configuring |vpcd| on Windows
 ================================================================================
 
-The configuration file :file:`BixVReader.ini` of |vpcd| is installed to
+The configuration file :file:`VivoKeySmartReader.ini` of |vpcd| is installed to
 :file:`C:\\Windows` (:envvar:`%SystemRoot%`). The user mode device driver
 framework (:command:`WUDFHost.exe`) should read it automatically and load the
 |vpcd| on startup. The Windows Device Manager :command:`mmc devmgmt.msc` should
-list the :guilabel:`Bix Virtual Smart Card Reader`.
+list the :guilabel:`VivoKey Virtual Smart Card Reader`.
 
 |vpcd| opens a socket for |vpicc| and waits for incoming connections. The port
 to open should be specified in ``TCP_PORT``:
 
-.. literalinclude:: ../../virtualsmartcard/win32/BixVReader/BixVReader.ini
+.. literalinclude:: ../../virtualsmartcard/win32/VivoKeySmartReader/VivoKeySmartReader.ini
     :emphasize-lines: 8
 
 Currently it is not possible to configure the Windows driver to connect to an
