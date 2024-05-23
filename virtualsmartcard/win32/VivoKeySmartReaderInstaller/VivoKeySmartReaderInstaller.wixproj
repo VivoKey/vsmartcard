@@ -10,6 +10,7 @@
     <OutputType>Package</OutputType>
     <WixTargetsPath Condition=" '$(WixTargetsPath)' == '' AND '$(MSBuildExtensionsPath32)' != '' ">$(MSBuildExtensionsPath32)\Microsoft\WiX\v3.x\Wix.targets</WixTargetsPath>
     <WixTargetsPath Condition=" '$(WixTargetsPath)' == '' ">$(MSBuildExtensionsPath)\Microsoft\WiX\v3.x\Wix.targets</WixTargetsPath>
+    <SignOutput>true</SignOutput>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <OutputPath>bin\$(Configuration)\</OutputPath>
@@ -68,4 +69,10 @@
 	<Target Name="AfterBuild">
 	</Target>
 	-->
+  <Target Name="SignCabs">
+    <Exec Command="&quot;C:\Program Files (x86)\Windows Kits\8.1\bin\x64\signtool.exe&quot; sign /sha1 &quot;5d16436c3cfb5a5e7548472b23af2a268aec7831&quot; /fd &quot;sha256&quot; /tr &quot;http://ts.ssl.com&quot; /a &quot;%(SignCabs.FullPath)&quot;" />
+  </Target>
+    <Target Name="SignMsi">
+    <Exec Command="&quot;C:\Program Files (x86)\Windows Kits\8.1\bin\x64\signtool.exe&quot; sign /sha1 &quot;5d16436c3cfb5a5e7548472b23af2a268aec7831&quot; /fd &quot;sha256&quot; /tr &quot;http://ts.ssl.com&quot; /a &quot;%(SignMsi.FullPath)&quot;" />
+  </Target>
 </Project>
